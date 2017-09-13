@@ -5,6 +5,11 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 
+namespace
+{
+    const QString TICKER = "Сбербанк";
+}
+
 DataManager::DataManager()
 {
     connect(&m_networkAccessManager, &QNetworkAccessManager::finished,
@@ -38,7 +43,7 @@ void DataManager::loadData()
 
     RequestParameters requestParameters;
     requestParameters.setMarketPlace(MarketPlace::MICEX);
-    requestParameters.setTicker("Сбербанк");
+    requestParameters.setTicker(TICKER);
     requestParameters.setTimeFrame(TimeFrame::Minute);
     requestParameters.setFrom(QDate(2017, 9, 11));
     requestParameters.setTo(QDate(2017, 9, 11));
@@ -74,6 +79,9 @@ void DataManager::processReply(QNetworkReply* reply)
     qDebug() << "Got reply";
 
     m_quotations = Quotations::from(reply->readAll());
+    m_quotations.setTicker(TICKER);
+
+    emit dataLoaded();
 
     // TODO: delete this call
     doSomethingWith();

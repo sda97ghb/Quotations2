@@ -1,9 +1,18 @@
+#include "Application.h"
+#include "BetterCpp.h"
 #include "CandlestickChartModel.h"
 
 CandlestickChartModel::CandlestickChartModel(QObject* parent) :
-    QAbstractTableModel(parent)
+    QAbstractTableModel(parent),
+    m_hourFrom(10),
+    m_minuteFrom(0),
+    m_intervalLength(10)
 {
-    updateData();
+    // All fields will be initialized after this call
+    resetData();
+
+    connect(&Application::instance().dataManager(), &DataManager::dataLoaded,
+            this, &CandlestickChartModel::updateData);
 }
 
 int CandlestickChartModel::rowCount(const QModelIndex& parent) const
@@ -15,7 +24,7 @@ int CandlestickChartModel::rowCount(const QModelIndex& parent) const
 int CandlestickChartModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
-    return 5; // Timestamp + OHLC, one column for one parameter
+    return 5; // Timestamp + OHLC, one column for each parameter
 }
 
 QVariant CandlestickChartModel::data(const QModelIndex& index, int role) const
@@ -87,38 +96,45 @@ double CandlestickChartModel::maxValue() const
 
 void CandlestickChartModel::updateData()
 {
+    Quotations allQuotations = Application::instance().dataManager().quotations();
+    if (allQuotations.isEmpty())
+        return_after resetData();
+
+    QDateTime from(allQuotations.first().datetime.date(), QTime(m_hourFrom, m_minuteFrom));
+    Quotations currentQuotations = allQuotations.laterThan(from).inInterval(m_intervalLength - 1);
+
+    if (currentQuotations.isEmpty())
+        return_after resetData();
+
     beginResetModel();
-
-    //    Quotations allQuotations = Application::instance().dataManager().quotations();
-//    if (allQuotations.isEmpty())
-//    {
-//        m_quotations.clear();
-//        setSeriesFrom(QDateTime(QDate(2000, 1, 1), QTime(0, 0)));
-//        setSeriesTo(QDateTime(QDate(2000, 1, 1), QTime(0, 1)));
-//        setSeriesSize(0);
-//    }
-
     m_quotations.clear();
-
-    for (int m = 45; m < 60; ++ m)
-    {
-        Quotation quotation;
-        quotation.datetime = QDateTime(QDate(2017, 9, 1), QTime(17, m));
-        quotation.open = 10.0 + rand() % 20;
-        quotation.close = 10.0 + rand() % 20;
-        quotation.high = 25.0;
-        quotation.low = 5.0;
-        m_quotations.append(quotation);
-    }
-
+    m_quotations.append(currentQuotations.toList());
     endResetModel();
+
+    setMinValue(currentQuotations.min());
+    setMaxValue(currentQuotations.max());
 
     setSeriesFrom(m_quotations.first().datetime.addSecs(-30));
     setSeriesTo(m_quotations.last().datetime.addSecs(30));
 
-    setSeriesName("Sber");
+    setSeriesName(allQuotations.ticker());
 
     setSeriesSize(rowCount());
+}
+
+void CandlestickChartModel::resetData()
+{
+    {
+        beginResetModel();
+        m_quotations.clear();
+        endResetModel();
+    }
+    setMinValue(0.0);
+    setMaxValue(1.0);
+    setSeriesFrom(QDateTime(QDate(2000, 1, 1), QTime(0, 0)));
+    setSeriesTo(QDateTime(QDate(2000, 1, 1), QTime(0, 1)));
+    setSeriesName("Data is unavailable");
+    setSeriesSize(0);
 }
 
 void CandlestickChartModel::setSeriesFrom(QDateTime dateFrom)

@@ -61,6 +61,7 @@ signals:
 
 public slots:
     void updateData();
+    void resetData();
 
     void setSeriesFrom(QDateTime seriesFrom);
     void setSeriesTo(QDateTime seriesTo);

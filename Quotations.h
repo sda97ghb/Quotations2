@@ -29,8 +29,12 @@ public:
 
     QList<Quotation> toList() const;
 
+    QString ticker() const;
+    void setTicker(const QString& ticker);
+
 private:
     QList<Quotation> m_list;
+    QString m_ticker;
 };
 
 #endif // QUOTATIONS_H

@@ -16,6 +16,9 @@ public:
 
     Quotations quotations() const;
 
+signals:
+    void dataLoaded();
+
 private slots:
     void processReply(QNetworkReply* reply);
 

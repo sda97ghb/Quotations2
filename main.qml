@@ -26,28 +26,6 @@ ApplicationWindow {
         onTriggered: loadDataFromServer.execute()
     }
 
-    ChartDataSource {
-        id: chartDataSource
-        hourFrom: hourFrom.value
-        minuteFrom: minuteFrom.value
-        intervalLength: intervalLength.value
-        onUpdated: chartDataSource.updateSeries(chartView.series(0))
-    }
-
-    Timer {
-        interval: 1000
-        running: true
-        repeat: true
-        onTriggered: chartDataSource.update()
-    }
-
-//    Timer {
-//        interval: 1000
-//        running: true
-//        repeat: true
-//        onTriggered: candlestickChartModel.updateData()
-//    }
-
     //---------------- Visual components ----------------//
     ScrollView {
         id: controlPanel
@@ -99,7 +77,7 @@ ApplicationWindow {
                 to: 18
                 value: 10
                 editable: true
-                onValueChanged: chartDataSource.update()
+                onValueChanged: candlestickChartModel.updateData()
             }
 
             Text {
@@ -114,7 +92,7 @@ ApplicationWindow {
                 to: hourFrom.value == 18 ? 49 : 59
                 value: 0
                 editable: true
-                onValueChanged: chartDataSource.update()
+                onValueChanged: candlestickChartModel.updateData()
             }
 
             Text {
@@ -128,7 +106,7 @@ ApplicationWindow {
                 to: 60
                 value: 10
                 editable: true
-                onValueChanged: chartDataSource.update()
+                onValueChanged: candlestickChartModel.updateData()
             }
 
             SpacingRow {
@@ -147,7 +125,7 @@ ApplicationWindow {
 
                     Text {
                         font.pointSize: 14
-                        text: chartDataSource.minValue
+                        text: "unavailable"//chartDataSource.minValue
                     }
                 }
 
@@ -160,7 +138,7 @@ ApplicationWindow {
 
                     Text {
                         font.pointSize: 14
-                        text: chartDataSource.maxValue
+                        text: "unavailable"//chartDataSource.maxValue
                     }
                 }
             }
@@ -216,45 +194,39 @@ ApplicationWindow {
         theme: ChartView.ChartThemeLight
 
         CandlestickSeries {
-//            HCandlestickModelMapper {
-//                model: CandlestickChartModel {
-//                    id: candlestickChartModel
-//                }
-//                timestampColumn: 0
-//                openColumn: 1
-//                highColumn: 2
-//                lowColumn: 3
-//                closeColumn: 4
-//                firstSetRow: 0
-//                lastSetRow: candlestickChartModel.seriesSize + 1
-//            }
+            HCandlestickModelMapper {
+                model: CandlestickChartModel {
+                    id: candlestickChartModel
+                    hourFrom: hourFrom.value
+                    minuteFrom: minuteFrom.value
+                    intervalLength: intervalLength.value
+                }
+                timestampColumn: 0
+                openColumn: 1
+                highColumn: 2
+                lowColumn: 3
+                closeColumn: 4
+                firstSetRow: 0
+                lastSetRow: candlestickChartModel.seriesSize + 1
+            }
 
-//            name: candlestickChartModel.seriesName
-            name: "TODO: add series name"
+            name: candlestickChartModel.seriesName
+
             increasingColor: "green"
             decreasingColor: "red"
 
             axisX: DateTimeAxis {
-                min: chartDataSource.from
-                max: chartDataSource.to
-                format: "yyyy.MM.dd hh.mm"
-//                min: candlestickChartModel.from
-//                max: candlestickChartModel.to
-//                format: "hh:mm"
+                min: candlestickChartModel.seriesFrom
+                max: candlestickChartModel.seriesTo
+                format: "hh:mm:ss"
+                tickCount: 2 * candlestickChartModel.seriesSize + 1
+                labelsAngle: -90
             }
 
             axisY: ValueAxis {
-                min: customMinMax.checked ? customMin.value : chartDataSource.minValue
-                max: customMinMax.checked ? customMax.value : chartDataSource.maxValue
-//                min: 0
-//                max: 40
+                min: customMinMax.checked ? customMin.value : candlestickChartModel.minValue
+                max: customMinMax.checked ? customMax.value : candlestickChartModel.maxValue
             }
-
-//            CandlestickSet { timestamp: 1435708800000; open: 183.47; high: 184.35; low: 183.47; close: 184.21 }
-//            CandlestickSet { timestamp: 1435795200000; open: 184.16; high: 184.4;  low: 184.08; close: 184.29 }
-//            CandlestickSet { timestamp: 1436140800000; open: 184.29; high: 184.29; low: 183.74; close: 184.03 }
-//            CandlestickSet { timestamp: 1436227200000; open: 184.05; high: 184.05; low: 183.91; close: 184 }
-//            CandlestickSet { timestamp: 1436313600000; open: 184;    high: 184;    low: 183.74; close: 183.9 }
         }
     }
 }

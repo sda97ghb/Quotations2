@@ -1,5 +1,4 @@
 #include "CandlestickChartModel.h"
-#include "ChartDataSource.h"
 #include "LoadDataFromServer.h"
 
 #include <QtWidgets/QApplication>
@@ -15,7 +14,6 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     qmlRegisterType<CandlestickChartModel>("MyTypes", 1, 0, "CandlestickChartModel");
-    qmlRegisterType<ChartDataSource>("MyTypes", 1, 0, "ChartDataSource");
     qmlRegisterType<LoadDataFromServer>("MyTypes", 1, 0, "LoadDataFromServer");
 
     QQmlApplicationEngine engine;

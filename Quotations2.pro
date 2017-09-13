@@ -3,7 +3,6 @@ QT += charts qml quick
 CONFIG += c++14
 
 SOURCES += main.cpp \
-    ChartDataSource.cpp \
     Quotation.cpp \
     Quotations.cpp \
     RequestParameters.cpp \
@@ -37,11 +36,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    ChartDataSource.h \
     Quotation.h \
     Quotations.h \
     RequestParameters.h \
     DataManager.h \
     Application.h \
     LoadDataFromServer.h \
-    CandlestickChartModel.h
+    CandlestickChartModel.h \
+    BetterCpp.h

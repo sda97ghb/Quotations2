@@ -108,3 +108,13 @@ QList<Quotation> Quotations::toList() const
 {
     return m_list;
 }
+
+QString Quotations::ticker() const
+{
+    return m_ticker;
+}
+
+void Quotations::setTicker(const QString& ticker)
+{
+    m_ticker = ticker;
+}
