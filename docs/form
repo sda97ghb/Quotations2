@@ -1,0 +1,90 @@
+<form action="http://history.alor.ru/export/file.php" method="GET">
+    <!--Торговая площадка-->
+    <select class="input" id="board" name="board" onchange="clearTicker()">
+        <option value="MICEX">Фондовый рынок</option>
+        <option value="CURRENCY">Валютный рынок</option> 
+        <option value="FORTSF">Срочный рынок (фьючерсы)</option>
+        <option value="FORTSO">Срочный рынок (опционы)</option>
+        <option value="INDICES">Индексы</option>
+    </select>
+
+    <!--Инструмент-->
+    <input class="input ac_input" required="" id="ticker_name" name="ticker" autocomplete="off" value="" type="text">
+
+    <!--Таймфрейм:-->
+    <select class="input" id="period" style="width:130px;" name="period">
+        <option value="1">1 минута</option>
+        <option value="5">5 минут</option>
+        <option value="10">10 минут</option>
+        <option value="15">15 минут</option>
+        <option value="20">20 минут</option>
+        <option value="30">30 минут</option>
+        <option value="60" selected="">1 час</option>
+        <option value="1440">1 день</option>
+    </select>
+
+    <!--Период-->
+    с
+    <input class="datepicker export_input hasDatepicker" size="12" id="from" name="from" value="08.08.2017" type="text">
+    по 
+    <input class="datepicker export_input hasDatepicker" size="12" id="to" name="to" style="height:16px; padding:0px;" type="text">
+
+    <!--Формат файла-->
+    <input name="file_name" placeholder="[название файла]" value="" type="text">
+    <select name="formatFiles" id="formatFiles" onchange="JavaScript:SelectTypeFile()">
+        <option value="1">.txt</option>
+        <option value="2">.csv</option>										
+    </select>
+
+    <!--Формат записи в файл-->
+    <select name="format">
+        <option value="1">&lt;TICKER&gt;,&lt;PER&gt;,&lt;DATE&gt;,&lt;TIME&gt;,&lt;OPEN&gt;,&lt;HIGH&gt;,&lt;LOW&gt;,&lt;CLOSE&gt;,&lt;VOL&gt;</option>
+        <option value="2">&lt;TICKER&gt;,&lt;PER&gt;,&lt;DATE&gt;,&lt;TIME&gt;,&lt;OPEN&gt;,&lt;HIGH&gt;,&lt;LOW&gt;,&lt;CLOSE&gt;</option>
+        <option value="3">&lt;TICKER&gt;,&lt;PER&gt;,&lt;DATE&gt;,&lt;TIME&gt;,&lt;CLOSE&gt;,&lt;VOL&gt;</option>
+        <option value="4">&lt;TICKER&gt;,&lt;PER&gt;,&lt;DATE&gt;,&lt;TIME&gt;,&lt;CLOSE&gt;</option>
+        <option value="5">&lt;DATE&gt;,&lt;TIME&gt;,&lt;OPEN&gt;,&lt;HIGH&gt;,&lt;LOW&gt;,&lt;CLOSE&gt;,&lt;VOL&gt;</option> 
+        <option value="6">&lt;TICKER&gt;, &lt;PER&gt;, &lt;DATE&gt;, &lt;TIME&gt;, &lt;HIGH&gt;, &lt;LOW&gt;, &lt;CLOSE&gt;, &lt;VOL&gt;</option> 
+    </select>
+
+    <!--Формат даты и времени-->
+    <select name="formatDate">
+        <option value="1">ГГГГММДД</option>
+        <option value="2">ГГММДД</option>
+        <option value="3">ДДММГГ</option> 
+        <option value="4">ДД/ММ/ГГ</option>
+        <option value="5">ММ/ДД/ГГ</option>
+        <option value="6">ГГГГ-ММ-ДД</option>
+        <option value="7">ГГГГ.ММ.ДД</option>
+        <option value="8">ДД-ММ-ГГГГ</option>
+        <option value="9">ДД.ММ.ГГГГ</option>
+    </select>
+    <select name="formatTime">
+        <option value="1">ЧЧММСС</option>
+        <option value="2">ЧЧ:ММ:СС</option>
+        <option value="3">ЧЧММ</option>
+        <option value="4">ЧЧ:ММ</option> 
+    </select>
+
+    <!--Разделитель полей-->
+    <select name="fieldSeparator" id="fieldSeparator">
+        <option value="1">точка с запятой(;)</option>
+        <option value="2" selected="">запятая(,)</option>
+        <option value="3">точка(.)</option> 
+        <option value="4">пробел</option>
+        <option value="5">tab</option> 														
+    </select>
+
+    <!--Десятичный разделитель-->
+    <select name="formatSeparatorDischarge" id="formatSeparatorDischarge">
+        <option value="1">точка(.)</option>
+        <option value="2">запятая(,)</option>										
+        <option value="3">пробел</option>
+        <option value="4">кавычка (')</option> 		
+        <option value="5">нет</option> 	
+    </select>
+
+    <!--Добавить заголовок файла-->
+    <input name="addTopic" value="on" type="checkbox">
+
+    <input style="padding:3px; height:33px;" src="images/download.png" name="but" value="Скачать файл" type="image">
+</form>
