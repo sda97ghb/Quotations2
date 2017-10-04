@@ -2,17 +2,6 @@ QT += charts qml quick
 
 CONFIG += c++14
 
-SOURCES += main.cpp \
-    Quotation.cpp \
-    Quotations.cpp \
-    RequestParameters.cpp \
-    DataManager.cpp \
-    Application.cpp \
-    LoadDataFromServer.cpp \
-    CandlestickChartModel.cpp
-
-RESOURCES += qml.qrc
-
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
@@ -36,11 +25,56 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    Quotation.h \
-    Quotations.h \
-    RequestParameters.h \
-    DataManager.h \
-    Application.h \
-    LoadDataFromServer.h \
-    CandlestickChartModel.h \
-    BetterCpp.h
+    BetterCpp.h \
+    \
+    Data/RequestParameters.h \
+    Data/AlorRequestParameters.h \
+    Data/FinamRequestParameters.h \
+    Data/DataLoader.h \
+    Data/LoadableData.h \
+    Data/LoadableDeals.h \
+    Data/LoadableQuotations.h \
+    Data/LongPeriodDealsLoader.h \
+    \
+    Entities/Deal.h \
+    Entities/Deals.h \
+    Entities/Quotation.h \
+    Entities/Quotations.h \
+    \
+    Presenters/CandlestickChartModel.h \
+    Presenters/DealsHistogramModel.h \
+    Presenters/LongPeriodDealsStatisticsModel.h \
+    Presenters/StatisticsDTO.h \
+    Presenters/TodayDealsStatisticsModel.h \
+    \
+    Global.h \
+    Histogram.h \
+    IntRange.h
+
+SOURCES += \
+    main.cpp \
+    \
+    Data/AlorRequestParameters.cpp \
+    Data/FinamRequestParameters.cpp \
+    Data/DataLoader.cpp \
+    Data/LoadableData.cpp \
+    Data/LoadableQuotations.cpp \
+    Data/LoadableDeals.cpp \
+    Data/LongPeriodDealsLoader.cpp \
+    \
+    Entities/Deal.cpp \
+    Entities/Deals.cpp \
+    Entities/Quotation.cpp \
+    Entities/Quotations.cpp \
+    \
+    Presenters/CandlestickChartModel.cpp \
+    Presenters/DealsHistogramModel.cpp \
+    Presenters/LongPeriodDealsStatisticsModel.cpp \
+    Presenters/StatisticsDTO.cpp \
+    Presenters/TodayDealsStatisticsModel.cpp \
+    \
+    Global.cpp \
+    Histogram.cpp \
+    IntRange.cpp
+
+RESOURCES += qml.qrc

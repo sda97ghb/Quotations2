@@ -12,21 +12,34 @@ Quotations Quotations::from(QString data)
             continue;
 
         Quotation quotation;
-        quotation.datetime = QDateTime(
+        quotation.setDatetime(QDateTime(
                     QDate(QStringRef(&(tokens.at(2)), 0, 4).toInt(),
                           QStringRef(&(tokens.at(2)), 4, 2).toInt(),
                           QStringRef(&(tokens.at(2)), 6, 2).toInt()),
                     QTime(QStringRef(&(tokens.at(3)), 0, 2).toInt(),
-                          QStringRef(&(tokens.at(3)), 2, 2).toInt()));
-        quotation.open  = tokens.at(4).toDouble();
-        quotation.close = tokens.at(7).toDouble();
-        quotation.low   = tokens.at(6).toDouble();
-        quotation.high  = tokens.at(5).toDouble();
+                          QStringRef(&(tokens.at(3)), 2, 2).toInt())));
+        quotation.setOpen( tokens.at(4).toDouble());
+        quotation.setClose(tokens.at(7).toDouble());
+        quotation.setLow(  tokens.at(6).toDouble());
+        quotation.setHigh( tokens.at(5).toDouble());
 
         quotations.append(quotation);
     }
 
     return quotations;
+}
+
+Quotations::Quotations(QString ticker) :
+    m_ticker(ticker)
+{
+    // Designed as empty
+}
+
+Quotations::Quotations(const Quotations& other) :
+    m_ticker(other.ticker()),
+    m_list(other.toList())
+{
+    // Designed as empty
 }
 
 void Quotations::append(Quotation quotation)
@@ -38,7 +51,7 @@ Quotations Quotations::inInterval(QDateTime from, QDateTime to)
 {
     Quotations quotations;
     for (Quotation quotation : m_list)
-        if (quotation.datetime >= from && quotation.datetime <= to)
+        if (quotation.datetime() >= from && quotation.datetime() <= to)
             quotations.append(quotation);
     return quotations;
 }
@@ -49,7 +62,7 @@ Quotations Quotations::inInterval(int length)
     if (isEmpty())
         return Quotations();
 
-    QDateTime from = m_list.first().datetime;
+    QDateTime from = m_list.first().datetime();
     QDateTime to = from.addSecs(length * 60);
     return inInterval(from, to);
 }
@@ -59,7 +72,7 @@ Quotations Quotations::laterThan(QDateTime from)
     if (isEmpty())
         return Quotations();
 
-    return inInterval(from, m_list.last().datetime);
+    return inInterval(from, m_list.last().datetime());
 }
 
 Quotation Quotations::first()
@@ -87,8 +100,8 @@ double Quotations::max() const
     double value = -1e10;
 
     for (Quotation quotation : m_list)
-        if (value < quotation.high)
-            value = quotation.high;
+        if (value < quotation.high())
+            value = quotation.high();
 
     return value;
 }
@@ -98,8 +111,8 @@ double Quotations::min() const
     double value = 1e10;
 
     for (Quotation quotation : m_list)
-        if (value > quotation.low)
-            value = quotation.low;
+        if (value > quotation.low())
+            value = quotation.low();
 
     return value;
 }

@@ -3,5 +3,17 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>SpacingRow.qml</file>
+        <file>DatePicker.qml</file>
+        <file>icons/ic_event_black_24px.svg</file>
+        <file>dateTimeAuxiliary.js</file>
+        <file>DateView.qml</file>
+        <file>DayPicker.qml</file>
+        <file>MonthPicker.qml</file>
+        <file>icons/ic_arrow_back_black_24px.svg</file>
+        <file>LongPeriodStatistics.qml</file>
+        <file>LongPeriodStatisticsForm.ui.qml</file>
+        <file>Statistics.qml</file>
+        <file>DealsHistogram.qml</file>
+        <file>QuotationsCandlestickChart.qml</file>
     </qresource>
 </RCC>

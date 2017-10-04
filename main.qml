@@ -1,232 +1,147 @@
-import MyTypes 1.0
-import Qt.labs.calendar 1.0
-import QtQuick 2.9
+import QtQuick 2.8
 import QtQuick.Controls 2.2
-import QtCharts 2.2
 
 ApplicationWindow {
-    id: main
+    id: mainWindow
 
     visible: true
-    width: 1000
-    height: 660
+    width: 1280
+    height: 720
     title: "Quotations"
 
-    Component.onCompleted: loadDataFromServer.execute()
+    SwipeView {
+        id: swipeView
 
-    //---------------- Non-visual components ----------------//
-    LoadDataFromServer {
-        id: loadDataFromServer
-    }
-
-    Timer {
-        interval: 60000
-        running: true
-        repeat: true
-        onTriggered: loadDataFromServer.execute()
-    }
-
-    //---------------- Visual components ----------------//
-    ScrollView {
-        id: controlPanel
+        anchors.left: drawerMenu.right
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        width: 260
+        clip: true
 
-        Column {
-            anchors.fill: parent
-            spacing: 10
+        QuotationsCandlestickChart {
+        }
 
-            SpacingRow {
-                height: 20
-            }
+        LongPeriodStatistics {
+        }
 
-            Text {
-                text: "Date"
-            }
-
-            Row {
-                spacing: 22
-
-                Text {
-                    text: "07.09.2017"
-                    font.pointSize: 14
-                }
-                Button {
-                   text: "Change"
-                   anchors.verticalCenter: parent.verticalCenter
-                   anchors.verticalCenterOffset: -10
-//                   width: 30
-                   height: 30
-                }
-            }
-
-            SpacingRow {
-                height: 10
-            }
-
-            Text {
-                text: "Hour"
-            }
-
-            SpinBox {
-                id: hourFrom
-                width: parent.width - 30
-                from: 10
-                to: 18
-                value: 10
-                editable: true
-                onValueChanged: candlestickChartModel.updateData()
-            }
-
-            Text {
-                verticalAlignment: Text.AlignBottom
-                text: "Minute"
-            }
-
-            SpinBox {
-                id: minuteFrom
-                width: parent.width - 30
-                from: 0
-                to: hourFrom.value == 18 ? 49 : 59
-                value: 0
-                editable: true
-                onValueChanged: candlestickChartModel.updateData()
-            }
-
-            Text {
-                text: "Interval length"
-            }
-
-            SpinBox {
-                id: intervalLength
-                width: parent.width - 30
-                from: 1
-                to: 60
-                value: 10
-                editable: true
-                onValueChanged: candlestickChartModel.updateData()
-            }
-
-            SpacingRow {
-                height: 20
-            }
-
-            Row {
-                spacing: 20
-
-                Column {
-                    spacing: 10
-                    width: (parent.parent.width - 30) / 2
-                    Text {
-                        text: "Minimum"
-                    }
-
-                    Text {
-                        font.pointSize: 14
-                        text: "unavailable"//chartDataSource.minValue
-                    }
-                }
-
-                Column {
-                    spacing: 10
-                    width: (parent.parent.width - 30) / 2
-                    Text {
-                        text: "Maximum"
-                    }
-
-                    Text {
-                        font.pointSize: 14
-                        text: "unavailable"//chartDataSource.maxValue
-                    }
-                }
-            }
-
-            SpacingRow {
-                height: 10
-            }
-
-            CheckBox {
-                id: customMinMax
-                text: "Fixed chart min and max"
-            }
-
-            Text {
-                text: "Chart maximum"
-            }
-
-            SpinBox {
-                id: customMax
-                width: parent.width - 30
-                from: 1
-                to: 200
-                value: 190
-                editable: true
-            }
-
-            Text {
-                text: "Chart minimum"
-            }
-
-            SpinBox {
-                id: customMin
-                width: parent.width - 30
-                from: 0
-                to: 199
-                value: 180
-                editable: true
-            }
-
-            SpacingRow {
-                height: 20
-            }
+        DealsHistogram {
         }
     }
 
-    ChartView {
-        id: chartView
+    Item {
+        id: drawerMenu
+
+        anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.right: controlPanel.left
-        anchors.left: parent.left
-        antialiasing: true
-        theme: ChartView.ChartThemeLight
+        clip: false
+        width: 50
 
-        CandlestickSeries {
-            HCandlestickModelMapper {
-                model: CandlestickChartModel {
-                    id: candlestickChartModel
-                    hourFrom: hourFrom.value
-                    minuteFrom: minuteFrom.value
-                    intervalLength: intervalLength.value
-                }
-                timestampColumn: 0
-                openColumn: 1
-                highColumn: 2
-                lowColumn: 3
-                closeColumn: 4
-                firstSetRow: 0
-                lastSetRow: candlestickChartModel.seriesSize + 1
+        Rectangle {
+            anchors.fill: parent
+            color: "lightgray"
+        }
+
+        Column {
+            anchors.fill: parent
+
+            Button {
+                text: "="
+                width: 50
+                onClicked: drawerMenu.state = "expanded"
             }
 
-            name: candlestickChartModel.seriesName
-
-            increasingColor: "green"
-            decreasingColor: "red"
-
-            axisX: DateTimeAxis {
-                min: candlestickChartModel.seriesFrom
-                max: candlestickChartModel.seriesTo
-                format: "hh:mm:ss"
-                tickCount: 2 * candlestickChartModel.seriesSize + 1
-                labelsAngle: -90
+            Button {
+                width: parent.width
+                text: "Q"
+                onClicked: swipeView.currentIndex = 0
             }
-
-            axisY: ValueAxis {
-                min: customMinMax.checked ? customMin.value : candlestickChartModel.minValue
-                max: customMinMax.checked ? customMax.value : candlestickChartModel.maxValue
+            Button {
+                width: parent.width
+                text: "L"
+                onClicked: swipeView.currentIndex = 1
+            }
+            Button {
+                width: parent.width
+                text: "H"
+                onClicked: swipeView.currentIndex = 2
             }
         }
+
+        Item {
+            id: expandedMenu
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: 250
+
+            MouseArea {
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                width: mainWindow.width
+                onClicked: drawerMenu.state = "small"
+            }
+
+            Rectangle {
+                anchors.fill: parent
+                color: "lightgray"
+            }
+
+            Column {
+                anchors.fill: parent
+
+                Button {
+                    text: "="
+                    width: 50
+                    onClicked: drawerMenu.state = "small"
+                }
+
+                Button {
+                    text: "Quotations"
+                    width: parent.width
+                    onClicked: swipeView.currentIndex = 0
+                }
+                Button {
+                    text: "Long period statistics"
+                    width: parent.width
+                    onClicked: swipeView.currentIndex = 1
+                }
+                Button {
+                    text: "Deals volume histogram"
+                    width: parent.width
+                    onClicked: swipeView.currentIndex = 2
+                }
+            }
+        }
+
+        state: "small"
+
+        states: [
+            State {
+                name: "small"
+                PropertyChanges { target: expandedMenu; visible: false }
+                PropertyChanges { target: expandedMenu; width: 50 }
+            },
+            State {
+                name: "expanded"
+                PropertyChanges { target: expandedMenu; visible: true }
+                PropertyChanges { target: expandedMenu; width: 250 }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                from: "small"
+                to: "expanded"
+                PropertyAnimation { target: expandedMenu; properties: "width"; duration: 100 }
+            },
+            Transition {
+                from: "expanded"
+                to: "small"
+                PropertyAnimation { target: expandedMenu; properties: "width"; duration: 100 }
+                PropertyAnimation { target: expandedMenu; properties: "visible"; duration: 100 }
+            }
+        ]
     }
 }

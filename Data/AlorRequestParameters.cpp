@@ -1,8 +1,11 @@
-#include "RequestParameters.h"
+#include "AlorRequestParameters.h"
 
-QString MarketPlace::toString(MarketPlace::Value value)
+namespace alor
 {
-    switch (value)
+
+MarketPlace::operator QString() const
+{
+    switch (value())
     {
     case MICEX:    return "MICEX";
     case CURRENCY: return "CURRENCY";
@@ -14,9 +17,9 @@ QString MarketPlace::toString(MarketPlace::Value value)
     }
 }
 
-QString TimeFrame::toString(TimeFrame::Value value)
+TimeFrame::operator QString() const
 {
-    switch (value)
+    switch (value())
     {
     case Minute:      return "1";
     case Minute_x_5:  return "5";
@@ -31,9 +34,9 @@ QString TimeFrame::toString(TimeFrame::Value value)
     }
 }
 
-QString FileFormat::toString(FileFormat::Value value)
+FileFormat::operator QString() const
 {
-    switch (value)
+    switch (value())
     {
     case Txt: return "1";
     case Csv: return "2";
@@ -42,9 +45,9 @@ QString FileFormat::toString(FileFormat::Value value)
     }
 }
 
-QString RecordFormat::toString(RecordFormat::Value value)
+RecordFormat::operator QString() const
 {
-    switch (value)
+    switch (value())
     {
     case TICKER_PER_DATE_TIME_OPEN_HIGH_LOW_CLOSE_VOL: return "1";
     case TICKER_PER_DATE_TIME_OPEN_HIGH_LOW_CLOSE:     return "2";
@@ -57,9 +60,9 @@ QString RecordFormat::toString(RecordFormat::Value value)
     }
 }
 
-QString DateFormat::toString(DateFormat::Value value)
+DateFormat::operator QString() const
 {
-    switch (value)
+    switch (value())
     {
     case YYYY_MM_DD:             return "1";
     case YY_MM_DD:               return "2";
@@ -75,9 +78,9 @@ QString DateFormat::toString(DateFormat::Value value)
     }
 }
 
-QString TimeFormat::toString(TimeFormat::Value value)
+TimeFormat::operator QString() const
 {
-    switch (value)
+    switch (value())
     {
     case HH_MM_SS:             return "1";
     case HH_colon_MM_colon_SS: return "2";
@@ -88,9 +91,9 @@ QString TimeFormat::toString(TimeFormat::Value value)
     }
 }
 
-QString FieldSeparator::toString(FieldSeparator::Value value)
+FieldSeparator::operator QString() const
 {
-    switch (value)
+    switch (value())
     {
     case Semicolon: return "1";
     case Comma:     return "2";
@@ -102,9 +105,9 @@ QString FieldSeparator::toString(FieldSeparator::Value value)
     }
 }
 
-QString DecimalSeparator::toString(DecimalSeparator::Value value)
+DecimalSeparator::operator QString() const
 {
-    switch (value)
+    switch (value())
     {
     case Dot:         return "1";
     case Comma:       return "2";
@@ -116,7 +119,26 @@ QString DecimalSeparator::toString(DecimalSeparator::Value value)
     }
 }
 
-RequestParameters::RequestParameters() :
+AlorRequestParameters AlorRequestParameters::forQuotations(QString ticker, QDate date)
+{
+    AlorRequestParameters requestParameters;
+    requestParameters.setMarketPlace(MarketPlace::MICEX);
+    requestParameters.setTicker(ticker);
+    requestParameters.setTimeFrame(TimeFrame::Minute);
+    requestParameters.setFrom(date);
+    requestParameters.setTo(date);
+    requestParameters.setFileName("");
+    requestParameters.setFileFormat(FileFormat::Txt);
+    requestParameters.setRecordFormat(RecordFormat::TICKER_PER_DATE_TIME_OPEN_HIGH_LOW_CLOSE);
+    requestParameters.setDateFormat(DateFormat::YYYY_MM_DD);
+    requestParameters.setTimeFormat(TimeFormat::HH_MM);
+    requestParameters.setFieldSeparator(FieldSeparator::Comma);
+    requestParameters.setDecimalSeparator(DecimalSeparator::Dot);
+    requestParameters.setAddHeader(false);
+    return requestParameters;
+}
+
+AlorRequestParameters::AlorRequestParameters() :
     m_marketPlace(MarketPlace::MICEX),
     m_ticker(""),
     m_timeFrame(TimeFrame::Minute),
@@ -134,150 +156,152 @@ RequestParameters::RequestParameters() :
     // Designed as empty
 }
 
-QString RequestParameters::toGetRequestParameters()
+QString AlorRequestParameters::toGetRequestParameters() const
 {
-    return "board=" + MarketPlace::toString(marketPlace()) + "&" +
+    return "board=" + marketPlace().toString() + "&" +
            "ticker=" + ticker() + "&" +
-           "period=" + TimeFrame::toString(timeFrame()) + "&" +
+           "period=" + timeFrame().toString() + "&" +
            "from=" + from().toString("dd.MM.yyyy") + "&" +
            "to=" + to().toString("dd.MM.yyyy") + "&" +
            "file_name=" + fileName() + "&" +
-           "formatFiles=" + FileFormat::toString(fileFormat()) + "&" +
-           "format=" + RecordFormat::toString(recordFormat()) + "&" +
-           "formatDate=" + DateFormat::toString(dateFormat()) + "&" +
-           "formatTime=" + TimeFormat::toString(timeFormat()) + "&" +
-           "fieldSeparator=" + FieldSeparator::toString(fieldSeparator()) + "&" +
-           "formatSeparatorDischarge=" + DecimalSeparator::toString(decimalSeparator()) + "&" +
+           "formatFiles=" + fileFormat().toString() + "&" +
+           "format=" + recordFormat().toString() + "&" +
+           "formatDate=" + dateFormat().toString() + "&" +
+           "formatTime=" + timeFormat().toString() + "&" +
+           "fieldSeparator=" + fieldSeparator().toString() + "&" +
+           "formatSeparatorDischarge=" + decimalSeparator().toString() + "&" +
            "addTopic=" + (addHeader() ? "on" : "off");
 }
 
-MarketPlace::Value RequestParameters::marketPlace() const
+MarketPlace AlorRequestParameters::marketPlace() const
 {
     return m_marketPlace;
 }
 
-QString RequestParameters::ticker() const
+QString AlorRequestParameters::ticker() const
 {
     return m_ticker;
 }
 
-TimeFrame::Value RequestParameters::timeFrame() const
+TimeFrame AlorRequestParameters::timeFrame() const
 {
     return m_timeFrame;
 }
 
-QDate RequestParameters::from() const
+QDate AlorRequestParameters::from() const
 {
     return m_from;
 }
 
-QDate RequestParameters::to() const
+QDate AlorRequestParameters::to() const
 {
     return m_to;
 }
 
-QString RequestParameters::fileName() const
+QString AlorRequestParameters::fileName() const
 {
     return m_fileName;
 }
 
-FileFormat::Value RequestParameters::fileFormat() const
+FileFormat AlorRequestParameters::fileFormat() const
 {
     return m_fileFormat;
 }
 
-RecordFormat::Value RequestParameters::recordFormat() const
+RecordFormat AlorRequestParameters::recordFormat() const
 {
     return m_recordFormat;
 }
 
-DateFormat::Value RequestParameters::dateFormat() const
+DateFormat AlorRequestParameters::dateFormat() const
 {
     return m_dateFormat;
 }
 
-TimeFormat::Value RequestParameters::timeFormat() const
+TimeFormat AlorRequestParameters::timeFormat() const
 {
     return m_timeFormat;
 }
 
-DecimalSeparator::Value RequestParameters::decimalSeparator() const
+FieldSeparator AlorRequestParameters::fieldSeparator() const
+{
+    return m_fieldSeparator;
+}
+
+DecimalSeparator AlorRequestParameters::decimalSeparator() const
 {
     return m_decimalSeparator;
 }
 
-bool RequestParameters::addHeader() const
+bool AlorRequestParameters::addHeader() const
 {
     return m_addHeader;
 }
 
-void RequestParameters::setMarketPlace(const MarketPlace::Value& marketPlace)
+void AlorRequestParameters::setMarketPlace(MarketPlace marketPlace)
 {
     m_marketPlace = marketPlace;
 }
 
-void RequestParameters::setTicker(const QString& ticker)
+void AlorRequestParameters::setTicker(const QString& ticker)
 {
     m_ticker = ticker;
 }
 
-void RequestParameters::setTimeFrame(const TimeFrame::Value& timeFrame)
+void AlorRequestParameters::setTimeFrame(TimeFrame timeFrame)
 {
     m_timeFrame = timeFrame;
 }
 
-void RequestParameters::setFrom(const QDate& from)
+void AlorRequestParameters::setFrom(const QDate& from)
 
 {
     m_from = from;
 }
 
-void RequestParameters::setTo(const QDate& to)
+void AlorRequestParameters::setTo(const QDate& to)
 {
     m_to = to;
 }
 
-void RequestParameters::setFileName(const QString& fileName)
+void AlorRequestParameters::setFileName(const QString& fileName)
 {
     m_fileName = fileName;
 }
 
-void RequestParameters::setFileFormat(const FileFormat::Value& fileFormat)
+void AlorRequestParameters::setFileFormat(FileFormat fileFormat)
 {
     m_fileFormat = fileFormat;
 }
 
-void RequestParameters::setRecordFormat(const RecordFormat::Value& recordFormat)
+void AlorRequestParameters::setRecordFormat(RecordFormat recordFormat)
 {
     m_recordFormat = recordFormat;
 }
 
-void RequestParameters::setDateFormat(const DateFormat::Value& dateFormat)
+void AlorRequestParameters::setDateFormat(DateFormat dateFormat)
 {
     m_dateFormat = dateFormat;
 }
 
-void RequestParameters::setTimeFormat(const TimeFormat::Value& timeFormat)
+void AlorRequestParameters::setTimeFormat(TimeFormat timeFormat)
 {
     m_timeFormat = timeFormat;
 }
 
-FieldSeparator::Value RequestParameters::fieldSeparator() const
-{
-    return m_fieldSeparator;
-}
-
-void RequestParameters::setFieldSeparator(const FieldSeparator::Value& fieldSeparator)
+void AlorRequestParameters::setFieldSeparator(FieldSeparator fieldSeparator)
 {
     m_fieldSeparator = fieldSeparator;
 }
 
-void RequestParameters::setDecimalSeparator(const DecimalSeparator::Value& decimalSeparator)
+void AlorRequestParameters::setDecimalSeparator(DecimalSeparator decimalSeparator)
 {
     m_decimalSeparator = decimalSeparator;
 }
 
-void RequestParameters::setAddHeader(bool addHeader)
+void AlorRequestParameters::setAddHeader(bool addHeader)
 {
     m_addHeader = addHeader;
 }
+
+} // namespace alor
