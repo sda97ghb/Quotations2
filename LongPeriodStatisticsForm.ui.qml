@@ -3,8 +3,6 @@ import QtQuick 2.4
 import QtQuick.Controls 2.2
 
 Item {
-    id: item1
-
     property alias longPeriodDealsStatisticsModel: longPeriodDealsStatisticsModel
     property alias todayDealsStatisticsModel: todayDealsStatisticsModel
 
