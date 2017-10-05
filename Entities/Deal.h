@@ -6,6 +6,9 @@
 #include <QDateTime>
 #include <QString>
 
+/// Represents one single deal.
+///
+/// Can be printed using qDebug().
 class Deal
 {
 public:
@@ -30,6 +33,8 @@ public:
 
     operator QString() const;
 
+    /// @return true if deal can be interpreted as a valid deal (valid datetime,
+    /// volume is not zero, type is whether buy or sell). false otherwise.
     bool isValid() const;
 
     Type type() const;
@@ -46,14 +51,10 @@ public:
 
 private:
     Type m_type;
-
     QDateTime m_datetime;
-
     quint64 m_id;
-
     double m_last;
     quint64 m_volume;
-
 };
 
 #endif // OPERATION_H

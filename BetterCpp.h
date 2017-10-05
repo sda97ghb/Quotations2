@@ -1,6 +1,10 @@
+/// A part of BetterCpp project. (Useful-things-for-cpp project before).
+/// For more info see https://github.com/sda97ghb/BetterCpp
+
 #ifndef BETTERCPP_H
 #define BETTERCPP_H
 
+// Ruby's unless operator mimic
 #define unless(_condition_) if(!(_condition_))
 
 #define return_after return(void)

@@ -5,13 +5,7 @@ namespace finam
 
 Ticker::operator QString() const
 {
-    switch (value())
-    {
-    case SBER: return "3";
-    case GAZP: return "16842";
-
-    default: return "";
-    }
+    return toHumanReadableString();
 }
 
 QString Ticker::toHumanReadableString() const
@@ -22,6 +16,17 @@ QString Ticker::toHumanReadableString() const
     case GAZP: return "GAZP";
 
     default: return "UNKNOWN";
+    }
+}
+
+QString Ticker::toEm() const
+{
+    switch (value())
+    {
+    case SBER: return "3";
+    case GAZP: return "16842";
+
+    default: return "";
     }
 }
 
@@ -221,8 +226,8 @@ QString FinamRequestParameters::toGetRequestParameters() const
 
     QString parameters =
            p("market",    QString::number(m_market)) +
-           p("em",        m_ticker.toString()) +
-           p("code",      m_ticker.toHumanReadableString()) +
+           p("em",        m_ticker.toEm()) +
+           p("code",      m_ticker.toString()) +
            p("apply",     QString::number(m_apply)) +
            p("df",        QString::number(m_from.day())) +
            p("mf",        QString::number(m_from.month() - 1)) +
@@ -235,7 +240,7 @@ QString FinamRequestParameters::toGetRequestParameters() const
            p("p",         m_timeFrame.toString()) +
            p("f",         m_fileName) +
            p("e",         m_fileFormat.toString()) +
-           p("cn",        m_ticker.toHumanReadableString()) +
+           p("cn",        m_ticker.toString()) +
            p("dtf",       m_dateFormat.toString()) +
            p("tmf",       m_timeFormat.toString()) +
            p("MSOR",      m_candleTime.toString()) +

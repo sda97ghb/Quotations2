@@ -4,6 +4,9 @@
 #include <QDateTime>
 #include <QString>
 
+/// Represents one single quotation.
+///
+/// Can be printed with qDebug().
 class Quotation
 {
 public:
@@ -11,6 +14,10 @@ public:
 
     operator QString() const;
 
+    /// @return true if quotation can be interpreted as a valid quotation
+    /// (valid datetime, high not less than low, open and close is in interval
+    /// from low to high).
+    /// false otherwise.
     bool isValid() const;
 
     QDateTime datetime() const;

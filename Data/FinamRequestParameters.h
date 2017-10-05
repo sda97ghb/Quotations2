@@ -24,6 +24,7 @@ public:
     operator QString() const;
     QString toString() const { return QString(*this); }
     QString toHumanReadableString() const;
+    QString toEm() const;
 };
 
 class TimeFrame

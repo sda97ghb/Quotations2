@@ -7,11 +7,18 @@
 #include <QList>
 #include <QString>
 
+/// Collection of deals with interface similar to QList and
+/// special domain-based methods.
 class Deals
 {
 public:
+    /// @brief Parse deals from raw data.
+    /// @details One line for one deal, field separator is comma,
+    /// line contains following fields in following order:
+    ///     date(yyyyMMdd),time(hhmmss),last,volume,id,type(B or S)
     static Deals from(QString data);
 
+    /// Creates new collection with given ticker.
     Deals(QString ticker = QString());
     Deals(const Deals& other);
 
@@ -26,15 +33,19 @@ public:
 
     void append(Deal deal);
 
+    /// Transform this collection to QList. Creates deep copy.
     QList<Deal> toList() const;
 
     // Domain-based methods
 
+    /// Collection of deals in given interval.
     Deals inInterval(QDateTime from, QDateTime to);
 
+    /// Collection of deals in interval of given length from earliest deal.
     /// @arg length Length of the interval in minutes.
     Deals inInterval(int length = 10);
 
+    /// Filter deals made later than given datetime.
     Deals laterThan(QDateTime from);
 
     template <typename T>
@@ -51,6 +62,7 @@ public:
 
     quint64 averageVolume() const;
 
+    /// Sum of volumes of all deals.
     quint64 totalVolume() const;
 
     Deal find(std::function<bool(Deal)> condition) const;
@@ -72,6 +84,22 @@ public:
     }
     QList<quint64> toListOfVolumes() const;
 
+    /// Clusterization.
+    /// @arg property Function taking deal and returning class.
+    /// For example:
+    ///     // Split by day of week.
+    ///     QHash<int, Deals> byDayOfWeek = split<int>([](Deal deal){
+    ///         return deal.datetime().date().dayOfWeek();
+    ///     }
+    ///     // Split by volume.
+    ///     QHash<QString, Deals> by volume = split<QString>([](Deal deal){
+    ///         if (deal.volume() < 100)
+    ///             return "small";
+    ///         else if (deal.volume() < 1000)
+    ///             return "average";
+    ///         else
+    ///             return "big";
+    ///     }
     template <typename T>
     QHash<T, Deals> split(std::function<T(Deal)> property) const
     {

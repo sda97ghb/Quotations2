@@ -1,10 +1,12 @@
 #ifndef LONGPERIODDEALSSTATISTICSMODEL_H
 #define LONGPERIODDEALSSTATISTICSMODEL_H
 
-#include <LongPeriodDealsLoader.h>
+#include "StatisticsDTO.h"
+
+#include "Data/LongPeriodDealsLoader.h"
+
 #include <QAbstractListModel>
 
-#include "StatisticsDTO.h"
 
 class LongPeriodDealsStatisticsModel : public QAbstractListModel
 {

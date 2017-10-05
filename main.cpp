@@ -1,9 +1,11 @@
-#include "Histogram.h"
-#include "LongPeriodDealsLoader.h"
+//#include "Histogram.h"
 
-#include "Data/DataLoader.h"
-#include "Data/LoadableDeals.h"
-#include "Data/LoadableQuotations.h"
+//#include "Data/DataLoader.h"
+//#include "Data/LoadableDeals.h"
+//#include "Data/LoadableQuotations.h"
+//#include "Data/LongPeriodDealsLoader.h"
+
+//#include <QDebug>
 
 #include "Presenters/CandlestickChartModel.h"
 #include "Presenters/DealsHistogramModel.h"
@@ -12,7 +14,6 @@
 
 #include <QtWidgets/QApplication>
 
-//#include <QDebug>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
