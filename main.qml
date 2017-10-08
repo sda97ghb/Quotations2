@@ -45,25 +45,21 @@ ApplicationWindow {
         Column {
             anchors.fill: parent
 
-            Button {
-                text: "="
-                width: 50
+            SmallDrawerMenuButton {
+                icon: "icons/ic_menu.svg"
                 onClicked: drawerMenu.state = "expanded"
             }
 
-            Button {
-                width: parent.width
-                text: "Q"
+            SmallDrawerMenuButton {
+                icon: "icons/ic_chart.svg"
                 onClicked: swipeView.currentIndex = 0
             }
-            Button {
-                width: parent.width
-                text: "L"
+            SmallDrawerMenuButton {
+                icon: "icons/ic_long_period_statistic.svg"
                 onClicked: swipeView.currentIndex = 1
             }
-            Button {
-                width: parent.width
-                text: "H"
+            SmallDrawerMenuButton {
+                icon: "icons/ic_histogram.svg"
                 onClicked: swipeView.currentIndex = 2
             }
         }
@@ -91,25 +87,26 @@ ApplicationWindow {
             Column {
                 anchors.fill: parent
 
-                Button {
-                    text: "="
-                    width: 50
+                SmallDrawerMenuButton {
+                    icon: "icons/ic_menu.svg"
                     onClicked: drawerMenu.state = "small"
                 }
 
-                Button {
+                WideDrawerMenuButton {
                     text: "Quotations"
-                    width: parent.width
+                    icon: "icons/ic_chart.svg"
                     onClicked: swipeView.currentIndex = 0
                 }
-                Button {
-                    text: "Long period statistics"
-                    width: parent.width
+
+                WideDrawerMenuButton {
+                    text: "Long period statistic"
+                    icon: "icons/ic_long_period_statistic.svg"
                     onClicked: swipeView.currentIndex = 1
                 }
-                Button {
+
+                WideDrawerMenuButton {
                     text: "Deals volume histogram"
-                    width: parent.width
+                    icon: "icons/ic_histogram.svg"
                     onClicked: swipeView.currentIndex = 2
                 }
             }

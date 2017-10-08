@@ -2,6 +2,11 @@
 
 #include <QTextCodec>
 
+namespace
+{
+    static const int DATA_IS_TOO_SMALL_SIZE = 100;
+}
+
 DataLoader::DataLoader(QObject *parent) :
     QObject(parent),
     m_isRunned(false)
@@ -30,10 +35,26 @@ void DataLoader::run()
 
     m_data.clear();
 
-    qInfo() << "Make request at" << m_queue.head()->url();
+    LoadableData* loadableData = m_queue.head();
+    QString url = loadableData->url();
+
+    if (m_cache.check(url))
+    {
+        qInfo() << "Load from cache" << url;
+        m_data = m_cache.get(url);
+        qInfo() << "All data is loaded";
+        if (m_data.size() < DATA_IS_TOO_SMALL_SIZE)
+            qWarning() << QTextCodec::codecForMib(2251)->toUnicode(m_data);
+        m_queue.dequeue()->updateFrom(m_data);
+        m_isRunned = false;
+        emit loadFinished(QPrivateSignal());
+        return;
+    }
+
+    qInfo() << "Make request at" << url;
 
     QNetworkRequest request;
-    request.setUrl(QUrl(m_queue.head()->url()));
+    request.setUrl(QUrl(url));
 
     m_reply = m_networkAccessManager.get(request);
 
@@ -78,7 +99,7 @@ void DataLoader::onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
     if (bytesReceived == bytesTotal)
     {
         qInfo() << "All data is loaded";
-        static const int DATA_IS_TOO_SMALL_SIZE = 100;
+//        m_cache.save(m_queue.head()->url(), m_data);
         if (m_data.size() < DATA_IS_TOO_SMALL_SIZE)
             qWarning() << QTextCodec::codecForMib(2251)->toUnicode(m_data);
         m_queue.dequeue()->updateFrom(m_data);

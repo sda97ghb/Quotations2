@@ -1,6 +1,7 @@
 #ifndef DATALOADER_H
 #define DATALOADER_H
 
+#include "Cache.h"
 #include "LoadableData.h"
 
 #include <QNetworkAccessManager>
@@ -39,6 +40,8 @@ private:
     QByteArray m_data;
 
     bool m_isRunned;
+
+    Cache m_cache;
 };
 
 #endif // DATALOADER_H

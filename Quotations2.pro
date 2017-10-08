@@ -49,7 +49,8 @@ HEADERS += \
     \
     Global.h \
     Histogram.h \
-    IntRange.h
+    IntRange.h \
+    Data/Cache.h
 
 SOURCES += \
     main.cpp \
@@ -75,6 +76,7 @@ SOURCES += \
     \
     Global.cpp \
     Histogram.cpp \
-    IntRange.cpp
+    IntRange.cpp \
+    Data/Cache.cpp
 
 RESOURCES += qml.qrc

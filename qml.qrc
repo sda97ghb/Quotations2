@@ -15,5 +15,11 @@
         <file>Statistics.qml</file>
         <file>DealsHistogram.qml</file>
         <file>QuotationsCandlestickChart.qml</file>
+        <file>icons/ic_chart.svg</file>
+        <file>icons/ic_histogram.svg</file>
+        <file>icons/ic_long_period_statistic.svg</file>
+        <file>WideDrawerMenuButton.qml</file>
+        <file>SmallDrawerMenuButton.qml</file>
+        <file>icons/ic_menu.svg</file>
     </qresource>
 </RCC>
