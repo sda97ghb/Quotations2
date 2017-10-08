@@ -16,6 +16,8 @@ LongPeriodDealsLoader::LongPeriodDealsLoader(QString ticker, QDate from, QDate t
         loadableDeals->setTicker(ticker);
         connect(loadableDeals, &LoadableDeals::updated,
                 this, &LongPeriodDealsLoader::onDealsUpdated);
+        connect(loadableDeals, &LoadableDeals::error,
+                this, &LongPeriodDealsLoader::onDealsError);
         m_loadableDealsList.append(loadableDeals);
     }
     for (LoadableDeals* loadableDeals : m_loadableDealsList)
@@ -30,6 +32,13 @@ void LongPeriodDealsLoader::onDealsUpdated()
     Deals deals = loadableDeals->toDeals();
     if (deals.isEmpty())
         return_after Global::instance().dataLoader().load(loadableDeals);
+    ++ m_daysLoaded;
+    if (m_daysLoaded == m_loadableDealsList.size())
+        emit allDaysLoaded();
+}
+
+void LongPeriodDealsLoader::onDealsError()
+{
     ++ m_daysLoaded;
     if (m_daysLoaded == m_loadableDealsList.size())
         emit allDaysLoaded();

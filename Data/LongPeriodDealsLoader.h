@@ -42,6 +42,7 @@ signals:
 
 private slots:
     void onDealsUpdated();
+    void onDealsError();
 
 private:
     int m_daysLoaded;

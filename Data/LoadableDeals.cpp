@@ -29,6 +29,7 @@ void LoadableDeals::updateFrom(QByteArray data)
 void LoadableDeals::onError()
 {
     qWarning() << "Deals loading error";
+    emit error();
 }
 
 QString LoadableDeals::ticker() const

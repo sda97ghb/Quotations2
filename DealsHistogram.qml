@@ -17,6 +17,12 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 20
 
+        Button {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Update"
+            onClicked: dealsHistogramModel.reload()
+        }
+
         Row {
             width: parent.width
             Column {
@@ -157,7 +163,7 @@ Item {
                     numberOfIntervals: numberOfIntervals.value
                     volumeFrom: volumeFrom.value
                     volumeTo: volumeTo.value
-                    Component.onCompleted: reload()
+//                    Component.onCompleted: reload()
                 }
                 firstBarSetRow: 0
                 lastBarSetRow: 1

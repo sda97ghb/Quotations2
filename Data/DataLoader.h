@@ -8,6 +8,7 @@
 #include <QNetworkReply>
 #include <QObject>
 #include <QQueue>
+#include <QTimer>
 
 class DataLoader : public QObject
 {
@@ -42,6 +43,8 @@ private:
     bool m_isRunned;
 
     Cache m_cache;
+
+//    QTimer m_timer;
 };
 
 #endif // DATALOADER_H

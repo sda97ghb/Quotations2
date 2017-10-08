@@ -49,6 +49,8 @@ signals:
     /// Emitted after updateFrom(data).
     void updated();
 
+    void error();
+
 private:
     QString m_ticker;
     QDate m_date;
