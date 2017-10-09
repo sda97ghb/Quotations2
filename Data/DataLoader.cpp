@@ -1,8 +1,7 @@
 #include "DataLoader.h"
 
 #include <QTextCodec>
-
-#include <thread>
+#include <QTimer>
 
 namespace
 {
@@ -15,10 +14,6 @@ DataLoader::DataLoader(QObject *parent) :
 {
     connect(this, &DataLoader::loadFinished,
             this, &DataLoader::run);
-
-//    connect(&m_timer, &QTimer::timeout, [](){
-//        onDownloadProgress(m_data.size(), m_data.size());
-//    });
 }
 
 void DataLoader::load(LoadableData& loadable)
@@ -39,7 +34,6 @@ void DataLoader::run()
 
     m_isRunned = true;
 
-    m_data.clear();
 
     LoadableData* loadableData = m_queue.head();
     QString url = loadableData->url();
@@ -48,15 +42,16 @@ void DataLoader::run()
     {
         qInfo() << "Load from cache" << url;
         m_data = m_cache.get(url);
-        // Add little delay because UI is fat and slow and doesn't work without it.
+        // Add a little delay because UI is fat and slow and doesn't work without it.
         QTimer::singleShot(100, [&](){
             onDownloadProgress(m_data.size(), m_data.size());
         });
         return;
     }
 
-    qInfo() << "Make request at" << url;
+    m_data.clear();
 
+    qInfo() << "Make request at" << url;
     QNetworkRequest request;
     request.setUrl(QUrl(url));
 

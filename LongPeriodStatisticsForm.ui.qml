@@ -39,46 +39,6 @@ Item {
         anchors.topMargin: 10
         anchors.leftMargin: 10
 
-        Statistics {
-            id: todayStatistics
-
-            title: todayDealsStatisticsModel.statistics.title
-
-            numberOfDeals: todayDealsStatisticsModel.statistics.numberOfDeals
-            averageVolume: todayDealsStatisticsModel.statistics.averageVolume
-            minVolume: todayDealsStatisticsModel.statistics.minVolume
-            maxVolume: todayDealsStatisticsModel.statistics.maxVolume
-
-            numberOfBuyDeals: todayDealsStatisticsModel.statistics.numberOfBuyDeals
-            averageBuyVolume: todayDealsStatisticsModel.statistics.averageBuyVolume
-            minBuyVolume: todayDealsStatisticsModel.statistics.minBuyVolume
-            maxBuyVolume: todayDealsStatisticsModel.statistics.maxBuyVolume
-
-            numberOfSellDeals: todayDealsStatisticsModel.statistics.numberOfSellDeals
-            averageSellVolume: todayDealsStatisticsModel.statistics.averageSellVolume
-            minSellVolume: todayDealsStatisticsModel.statistics.minSellVolume
-            maxSellVolume: todayDealsStatisticsModel.statistics.maxSellVolume
-
-            TodayDealsStatisticsModel {
-                id: todayDealsStatisticsModel
-
-                ticker: tickerSelector.currentText
-                date: todayDatePicker.date
-            }
-        }
-
-        Item {
-            width: 20
-            height: parent.height
-
-            Rectangle {
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: 1
-                height: parent.height
-                color: "#000000"
-            }
-        }
-
         ListView {
             id: dayOfWeekStatisticsListView
             x: 0
@@ -110,6 +70,46 @@ Item {
                 ticker: tickerSelector.currentText
                 dateFrom: dateFromPicker.date
                 dateTo: dateToPicker.date
+            }
+        }
+
+        Item {
+            width: 10
+            height: parent.height
+
+            Rectangle {
+                anchors.left: parent.left
+                width: 1
+                height: parent.height
+                color: "#000000"
+            }
+        }
+
+        Statistics {
+            id: todayStatistics
+
+            title: "Today"
+
+            numberOfDeals: todayDealsStatisticsModel.statistics.numberOfDeals
+            averageVolume: todayDealsStatisticsModel.statistics.averageVolume
+            minVolume: todayDealsStatisticsModel.statistics.minVolume
+            maxVolume: todayDealsStatisticsModel.statistics.maxVolume
+
+            numberOfBuyDeals: todayDealsStatisticsModel.statistics.numberOfBuyDeals
+            averageBuyVolume: todayDealsStatisticsModel.statistics.averageBuyVolume
+            minBuyVolume: todayDealsStatisticsModel.statistics.minBuyVolume
+            maxBuyVolume: todayDealsStatisticsModel.statistics.maxBuyVolume
+
+            numberOfSellDeals: todayDealsStatisticsModel.statistics.numberOfSellDeals
+            averageSellVolume: todayDealsStatisticsModel.statistics.averageSellVolume
+            minSellVolume: todayDealsStatisticsModel.statistics.minSellVolume
+            maxSellVolume: todayDealsStatisticsModel.statistics.maxSellVolume
+
+            TodayDealsStatisticsModel {
+                id: todayDealsStatisticsModel
+
+                ticker: tickerSelector.currentText
+                date: todayDatePicker.date
             }
         }
     }
