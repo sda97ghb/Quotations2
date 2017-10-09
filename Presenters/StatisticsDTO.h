@@ -37,6 +37,24 @@ public:
     int minSellVolume;
     int maxSellVolume;
 
+    StatisticsDTO() :
+        title(""),
+        numberOfDeals(0),
+        averageVolume(0),
+        minVolume(0),
+        maxVolume(0),
+        numberOfBuyDeals(0),
+        averageBuyVolume(0),
+        minBuyVolume(0),
+        maxBuyVolume(0),
+        numberOfSellDeals(0),
+        averageSellVolume(0),
+        minSellVolume(0),
+        maxSellVolume(0)
+    {
+        // Designed as empty
+    }
+
     // TODO: add operator =
 };
 
