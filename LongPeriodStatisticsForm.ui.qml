@@ -3,16 +3,19 @@ import QtQuick 2.4
 import QtQuick.Controls 2.2
 
 Item {
+    id: longPeriodDealsStatisticScreen
+
     property alias longPeriodDealsStatisticsModel: longPeriodDealsStatisticsModel
     property alias todayDealsStatisticsModel: todayDealsStatisticsModel
 
-    width: 1280
-    height: 720
     property alias loadingRectangle: loadingRectangle
     property alias dateToPicker: dateToPicker
     property alias dateFromPicker: dateFromPicker
     property alias tickerSelector: tickerSelector
     property alias updateButton: updateButton
+
+    width: 1280
+    height: 720
 
     Rectangle {
         id: rightPanelSplitter
@@ -74,7 +77,7 @@ Item {
         }
 
         Item {
-            width: 10
+            width: 15
             height: parent.height
 
             Rectangle {
@@ -110,6 +113,22 @@ Item {
 
                 ticker: tickerSelector.currentText
                 date: todayDatePicker.date
+            }
+
+            Rectangle {
+                id: background
+                anchors.left: todayStatistics.left
+                anchors.right: todayStatistics.right
+                anchors.top: todayStatistics.top
+                anchors.leftMargin: -10
+                anchors.rightMargin: 0
+                anchors.topMargin: -5
+                anchors.bottomMargin: 5
+                height: longPeriodDealsStatisticScreen.height - 10
+                //                color: "#f0f0f0"
+                border.color: "black"
+                border.width: 1
+                z: -100
             }
         }
     }

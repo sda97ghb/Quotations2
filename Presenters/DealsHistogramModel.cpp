@@ -23,7 +23,7 @@ DealsHistogramModel::DealsHistogramModel() :
     m_sellHistogramSeriesData = fakeSellHistogramData;
 
     m_loadableDeals.setTicker("SBER");
-    m_loadableDeals.setDate(QDate(2017, 9, 28));//::currentDate());
+    m_loadableDeals.setDate(QDate::currentDate());
 
     connect(&m_loadableDeals, &LoadableDeals::updated,
             this, &DealsHistogramModel::updateData);

@@ -21,7 +21,7 @@ Item {
     property alias maxSellVolume: sellMaxVolumeLabel.text
 
     width: 150
-    height: 470
+    height: 600
 
     Column {
         id: column
@@ -84,6 +84,13 @@ Item {
 
         SpacingRow {
             id: spacingRow2
+
+            Rectangle {
+                height: 1
+                width: column.width - 10
+                anchors.verticalCenter: parent.verticalCenter
+                color: "black"
+            }
         }
 
         Label {
@@ -140,6 +147,13 @@ Item {
 
         SpacingRow {
             id: spacingRow3
+
+            Rectangle {
+                height: 1
+                width: column.width - 10
+                anchors.verticalCenter: parent.verticalCenter
+                color: "black"
+            }
         }
 
         Label {
